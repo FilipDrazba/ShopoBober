@@ -18,6 +18,7 @@
     <name>ShopoBober</name>
 
     <modules>
+        <module>AuthService</module>
         <module>ShopService</module>
     </modules>
 
