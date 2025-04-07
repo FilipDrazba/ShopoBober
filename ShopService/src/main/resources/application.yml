@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:${SHOP_DB_PORT}/${SHOP_DB_NAME}
+    username: ${SHOP_DB_USERNAME}
+    password: ${SHOP_DB_PASSWORD}
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: ${HIBERNATE_DDL_MODE}
