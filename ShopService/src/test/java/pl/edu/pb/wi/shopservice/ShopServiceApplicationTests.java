@@ -1,4 +1,4 @@
-package pl.edu.pb.wi.productservice;
+package pl.edu.pb.wi.shopservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

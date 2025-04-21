@@ -1,10 +1,10 @@
-package pl.edu.pb.wi.productservice.exceptions;
+package pl.edu.pb.wi.shopservice.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import pl.edu.pb.wi.productservice.dtos.ExceptionDto;
+import pl.edu.pb.wi.shopservice.dtos.ExceptionDto;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

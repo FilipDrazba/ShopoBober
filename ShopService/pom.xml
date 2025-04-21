@@ -83,7 +83,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>pl.edu.pb.wi.productservice.ShopServiceApplication</mainClass>
+                    <mainClass>pl.edu.pb.wi.shopservice.ShopServiceApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

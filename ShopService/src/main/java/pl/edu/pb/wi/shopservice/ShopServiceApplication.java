@@ -1,4 +1,4 @@
-package pl.edu.pb.wi.productservice;
+package pl.edu.pb.wi.shopservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

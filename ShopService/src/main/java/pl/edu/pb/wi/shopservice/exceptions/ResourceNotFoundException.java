@@ -1,4 +1,4 @@
-package pl.edu.pb.wi.productservice.exceptions;
+package pl.edu.pb.wi.shopservice.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException() {

@@ -1,4 +1,4 @@
-package pl.edu.pb.wi.productservice.dtos;
+package pl.edu.pb.wi.shopservice.dtos;
 
 public record ExceptionDto(int code,
                            String message,

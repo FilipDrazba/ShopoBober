@@ -1,0 +1,55 @@
+package pl.edu.pb.wi.shopservice.controllers;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import pl.edu.pb.wi.shopservice.dtos.ProductDto;
+import pl.edu.pb.wi.shopservice.services.ProductService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("shop/product")
+@RequiredArgsConstructor
+public class ProductController {
+    private final ProductService productService;
+
+    @GetMapping("all")
+    public ResponseEntity<List<ProductDto>> getProducts() {
+        return ResponseEntity
+                .ok(productService.getAllProducts());
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
+        return ResponseEntity
+                .ok(productService.getProductById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+        var createdProductDto = productService.createProduct(productDto);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(createdProductDto);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id,
+                                                    @RequestBody ProductDto productDto) {
+        var updatedProduct = productService.updateProduct(id, productDto);
+
+        return ResponseEntity
+                .ok(updatedProduct);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<ProductDto> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
+}
