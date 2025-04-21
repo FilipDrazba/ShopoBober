@@ -1,6 +1,15 @@
 package pl.edu.pb.wi.authservice.dtos;
 
-public record LoginRequestDto(String email,
-                              String password) {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+public record LoginRequestDto(
+        @Email
+        @NotBlank
+        String email,
+
+        @NotBlank
+        String password
+) {
 
 }

@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.authservice.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,17 +20,23 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("register")
-    public ResponseEntity<JwtValueDto> register(@RequestBody RegisterRequestDto request) {
+    public ResponseEntity<JwtValueDto> register(@Valid
+                                                @RequestBody
+                                                RegisterRequestDto request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("login")
-    public ResponseEntity<JwtValueDto> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<JwtValueDto> login(@Valid
+                                             @RequestBody
+                                             LoginRequestDto request) {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 
     @PostMapping("validate")
-    public ResponseEntity<UserInfoDto> validate(@RequestBody JwtValueDto request) {
+    public ResponseEntity<UserInfoDto> validate(@Valid
+                                                @RequestBody
+                                                JwtValueDto request) {
         var userInfo = authService.validateAndExtract(request);
         return ResponseEntity.ok(userInfo);
     }

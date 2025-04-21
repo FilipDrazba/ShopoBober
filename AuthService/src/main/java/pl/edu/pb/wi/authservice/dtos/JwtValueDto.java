@@ -1,5 +1,10 @@
 package pl.edu.pb.wi.authservice.dtos;
 
-public record JwtValueDto(String token) {
+import jakarta.validation.constraints.NotBlank;
+
+public record JwtValueDto(
+        @NotBlank
+        String token
+) {
 
 }
