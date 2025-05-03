@@ -13,6 +13,7 @@ import pl.edu.pb.wi.authservice.mappers.JwtMapper;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
@@ -22,15 +23,17 @@ public class JwtService {
 
     private final JwtMapper jwtMapper;
 
-    public JwtValueDto generateToken(User user) {
-        Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey));
+    }
 
+    public JwtValueDto generateToken(User user) {
         String tokenValue = Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("role", user.getRole())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
 
         return jwtMapper.toJwtDto(tokenValue);
@@ -39,7 +42,7 @@ public class JwtService {
     public boolean isTokenValid(String token) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(getSignInKey())
+                    .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token);
             return true;
@@ -50,14 +53,10 @@ public class JwtService {
 
     public String extractEmail(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSignInKey())
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-    }
-
-    private Key getSignInKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 }

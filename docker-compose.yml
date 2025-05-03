@@ -54,11 +54,9 @@ services:
       - SPRING_DATASOURCE_USERNAME=$SHOP_DB_USERNAME
       - SPRING_DATASOURCE_PASSWORD=$SHOP_DB_PASSWORD
       - SPRING_JPA_HIBERNATE_DDL_AUTO=$HIBERNATE_DDL_MODE
+      - AUTH_JWT_SECRET_KEY=$AUTH_JWT_SECRET_KEY
     depends_on:
       shop-db:
         condition: service_healthy
     ports:
       - $SHOP_SERVICE_PORT:8080
-
-
-

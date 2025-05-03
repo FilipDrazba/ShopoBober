@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.authservice.services;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final UserMapper userMapper;
 
+    @Transactional
     public JwtValueDto register(RegisterRequestDto request) {
         String encodedPassword = encoder.encode(request.password());
 

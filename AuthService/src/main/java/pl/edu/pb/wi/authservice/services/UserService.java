@@ -1,5 +1,6 @@
 package pl.edu.pb.wi.authservice.services;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
+    @Transactional
     public User createUser(RegisterRequestDto userDto) {
         User user = userMapper.toUser(userDto);
 
