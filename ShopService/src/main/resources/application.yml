@@ -8,3 +8,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: ${HIBERNATE_DDL_MODE}
+
+logging:
+  file:
+    name: ${SHOP_LOG_FILE_PATH:/logs/shop-service.log}
