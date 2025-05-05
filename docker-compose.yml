@@ -62,3 +62,10 @@ services:
         condition: service_healthy
     ports:
       - $SHOP_SERVICE_PORT:8080
+
+  report-service:
+    build:
+      context: ./ReportService
+      dockerfile: ./Dockerfile
+    ports:
+      - $REPORT_SERVICE_PORT:8080

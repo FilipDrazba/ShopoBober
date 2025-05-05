@@ -18,9 +18,10 @@
     <name>ShopoBober</name>
 
     <modules>
+        <module>CoreAuth</module>
         <module>AuthService</module>
         <module>ShopService</module>
-        <module>CoreAuth</module>
+        <module>ReportService</module>
     </modules>
 
     <properties>
