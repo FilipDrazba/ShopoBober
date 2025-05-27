@@ -22,8 +22,7 @@ public class CartService {
     private final ProductRepository productRepository;
 
     public List<CartProductDto> getCartProducts(String email) {
-        return cartRepository.findAll().stream()
-                .filter(cartProduct -> cartProduct.getId().getUserEmail().equals(email))
+        return cartRepository.findAllById_UserEmail(email).stream()
                 .map(cartMapper::toCartProductDto)
                 .toList();
     }
@@ -31,20 +30,24 @@ public class CartService {
     @Transactional
     public void addToCart(String email, CartProductActionDto cartProductActionDto) {
         var cartProductId = new CartProductId(cartProductActionDto.productId(), email);
-
         var optionalCartProduct = cartRepository.findById(cartProductId);
+
         if (optionalCartProduct.isPresent()) {
             var product = optionalCartProduct.get();
             product.setQuantity(product.getQuantity() + cartProductActionDto.quantity());
             cartRepository.save(product);
+
         } else {
-            var cartProduct = new CartProduct();
             var product = productRepository
                     .findById(cartProductActionDto.productId())
                     .orElseThrow(ResourceNotFoundException::new);
-            cartProduct.setId(cartProductId);
-            cartProduct.setProduct(product);
-            cartProduct.setQuantity(cartProductActionDto.quantity());
+
+            var cartProduct = CartProduct.builder()
+                    .id(cartProductId)
+                    .product(product)
+                    .quantity(cartProductActionDto.quantity())
+                    .build();
+
             cartRepository.save(cartProduct);
         }
     }
@@ -52,13 +55,17 @@ public class CartService {
     @Transactional
     public void removeFromCart(String email, CartProductActionDto cartProductActionDto) {
         var cartProductId = new CartProductId(cartProductActionDto.productId(), email);
-        var optionalCartProduct = cartRepository.findById(cartProductId);
-        if (optionalCartProduct.isPresent()) {
-            var cartProduct = optionalCartProduct.get();
-            cartProduct.setQuantity(Math.max(cartProduct.getQuantity() - cartProductActionDto.quantity(), 0));
-            cartRepository.save(cartProduct);
+        var cartProduct = cartRepository
+                .findById(cartProductId)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        int newQuantity = cartProduct.getQuantity() - cartProductActionDto.quantity();
+
+        if (newQuantity <= 0) {
+            cartRepository.delete(cartProduct);
         } else {
-            throw new ResourceNotFoundException();
+            cartProduct.setQuantity(newQuantity);
+            cartRepository.save(cartProduct);
         }
     }
 }

@@ -1,13 +1,15 @@
 package pl.edu.pb.wi.shopservice.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Entity
-@Table(name = "cart_product")
 @Getter
 @Setter
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "cart_product")
 public class CartProduct {
     @EmbeddedId
     private CartProductId id;

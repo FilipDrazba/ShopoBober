@@ -36,7 +36,8 @@ public class CartController {
     }
 
     @DeleteMapping("{productId}")
-    public ResponseEntity<Void> removeProductFromCart(@PathVariable Long productId, @RequestParam Optional<Integer> quantity) {
+    public ResponseEntity<Void> removeProductFromCart(@PathVariable Long productId,
+                                                      @RequestParam Optional<Integer> quantity) {
         String email = getCurrentUserEmail();
         int quantityValue = quantity.orElse(1);
         CartProductActionDto cartProductActionDto = new CartProductActionDto(productId, quantityValue);
