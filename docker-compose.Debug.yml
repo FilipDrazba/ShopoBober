@@ -1,0 +1,72 @@
+name: shopo-bober
+
+services:
+  auth-db:
+    image: postgres:17.4
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $AUTH_DB_USERNAME -d $AUTH_DB_NAME" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_DB=$AUTH_DB_NAME
+      - POSTGRES_USER=$AUTH_DB_USERNAME
+      - POSTGRES_PASSWORD=$AUTH_DB_PASSWORD
+    ports:
+      - ${AUTH_DB_PORT}:5432
+
+  auth-service:
+    build:
+      context: ./AuthService
+      dockerfile: ./Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-db:5432/$AUTH_DB_NAME
+      - SPRING_DATASOURCE_USERNAME=$AUTH_DB_USERNAME
+      - SPRING_DATASOURCE_PASSWORD=$AUTH_DB_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=$HIBERNATE_DDL_MODE
+      - AUTH_JWT_SECRET_KEY=$AUTH_JWT_SECRET_KEY
+    depends_on:
+      auth-db:
+        condition: service_healthy
+    ports:
+      - $AUTH_SERVICE_PORT:8080
+
+  shop-db:
+    image: postgres:17.4
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $SHOP_DB_USERNAME -d $SHOP_DB_NAME" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_DB=$SHOP_DB_NAME
+      - POSTGRES_USER=$SHOP_DB_USERNAME
+      - POSTGRES_PASSWORD=$SHOP_DB_PASSWORD
+    ports:
+      - ${SHOP_DB_PORT}:5432
+
+  shop-service:
+    build:
+      context: ./ShopService
+      dockerfile: ./DockerfileDebug
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://shop-db:5432/$SHOP_DB_NAME
+      - SPRING_DATASOURCE_USERNAME=$SHOP_DB_USERNAME
+      - SPRING_DATASOURCE_PASSWORD=$SHOP_DB_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=$HIBERNATE_DDL_MODE
+      - AUTH_JWT_SECRET_KEY=$AUTH_JWT_SECRET_KEY
+      - SHOP_LOG_FILE_PATH=$SHOP_LOG_FILE_PATH
+
+    depends_on:
+      shop-db:
+        condition: service_healthy
+    ports:
+      - $SHOP_SERVICE_PORT:8080
+      - 5005:5005
+
+  report-service:
+    build:
+      context: ./ReportService
+      dockerfile: ./Dockerfile
+    ports:
+      - $REPORT_SERVICE_PORT:8080
