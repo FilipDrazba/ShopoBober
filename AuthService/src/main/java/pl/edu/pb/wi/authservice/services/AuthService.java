@@ -10,7 +10,9 @@ import pl.edu.pb.wi.authservice.dtos.LoginRequestDto;
 import pl.edu.pb.wi.authservice.dtos.RegisterRequestDto;
 import pl.edu.pb.wi.authservice.entities.User;
 import pl.edu.pb.wi.authservice.mappers.UserMapper;
+import pl.edu.pb.wi.authservice.repositories.UserRepository;
 import pl.edu.pb.wi.common.dtos.UserInfoDto;
+import pl.edu.pb.wi.common.enums.Role;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class AuthService {
     private final UserService userService;
     private final JwtService jwtService;
     private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
     @Transactional
     public JwtValueDto register(RegisterRequestDto request) {
@@ -55,5 +58,15 @@ public class AuthService {
         User user = userService.getUserByEmail(email);
 
         return userMapper.toUserInfoDto(user);
+    }
+
+    public void verifyEmployee(Long id) {
+        var user = userRepository
+                .findById(id)
+                .orElseThrow();
+
+        user.setRole(Role.EMPLOYEE);
+
+        userRepository.save(user);
     }
 }

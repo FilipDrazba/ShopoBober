@@ -3,10 +3,8 @@ package pl.edu.pb.wi.authservice.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.pb.wi.authservice.dtos.LoginRequestDto;
 import pl.edu.pb.wi.authservice.dtos.JwtValueDto;
 import pl.edu.pb.wi.authservice.dtos.RegisterRequestDto;
@@ -39,5 +37,13 @@ public class AuthController {
                                                 JwtValueDto request) {
         var userInfo = authService.validateAndExtract(request);
         return ResponseEntity.ok(userInfo);
+    }
+
+    @PostMapping("verify-employee/{id}")
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    public ResponseEntity<Void> verifyEmployee(@PathVariable Long id) {
+        authService.verifyEmployee(id);
+
+        return ResponseEntity.ok().build();
     }
 }
