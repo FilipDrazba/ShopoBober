@@ -69,3 +69,8 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - $REPORT_SERVICE_PORT:8080
+    environment:
+      - SPRING_R2DBC_URL=r2dbc:postgresql://shop-db:5432/$SHOP_DB_NAME
+      - SPRING_R2DBC_USERNAME=$SHOP_DB_USERNAME
+      - SPRING_R2DBC_PASSWORD=$SHOP_DB_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=$HIBERNATE_DDL_MODE
