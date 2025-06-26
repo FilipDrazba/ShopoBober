@@ -12,8 +12,9 @@
     </parent>
 
     <artifactId>ShopService</artifactId>
-    <name>ProductService</name>
-    <description>ProductService</description>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>ShopService</name>
+    <description>ShopService</description>
 
     <properties>
         <java.version>17</java.version>

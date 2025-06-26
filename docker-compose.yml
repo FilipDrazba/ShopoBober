@@ -1,6 +1,28 @@
 name: shopo-bober
 
 services:
+  api-gateway:
+    build:
+      context: ./ApiGateway
+    environment:
+      - SPRING_CLOUD_GATEWAY_ROUTES[0]_ID=auth-service
+      - SPRING_CLOUD_GATEWAY_ROUTES[0]_URI=http://auth-service:8080
+      - SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]=Path=/auth/**
+
+      - SPRING_CLOUD_GATEWAY_ROUTES[1]_ID=shop-service
+      - SPRING_CLOUD_GATEWAY_ROUTES[1]_URI=http://shop-service:8080
+      - SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]=Path=/shop/**
+
+      - SPRING_CLOUD_GATEWAY_ROUTES[2]_ID=report-service
+      - SPRING_CLOUD_GATEWAY_ROUTES[2]_URI=http://report-service:8080
+      - SPRING_CLOUD_GATEWAY_ROUTES[2]_PREDICATES[0]=Path=/reports/**
+    depends_on:
+      - auth-service
+      - shop-service
+      - report-service
+    ports:
+      - $GATEWAY_PORT:8080
+
   auth-db:
     image: postgres:17.4
     healthcheck:

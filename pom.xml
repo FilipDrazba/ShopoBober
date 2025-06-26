@@ -18,6 +18,7 @@
     <name>ShopoBober</name>
 
     <modules>
+        <module>ApiGateway</module>
         <module>CoreAuth</module>
         <module>AuthService</module>
         <module>ShopService</module>
