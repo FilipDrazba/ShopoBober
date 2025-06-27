@@ -2,4 +2,4 @@
 
 ./mvnw clean package -DskipTests
 
-docker compose -f docker-compose.yml --env-file .envs/.env up --build --force-recreate -d
+docker compose -f docker-compose.yml --env-file .envs/.env.template up --build --force-recreate -d
